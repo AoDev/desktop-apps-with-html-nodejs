@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HTML5 + nodejs = Desktop apps</title>
+    <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+    <meta name="author" content="Hakim El Hattab">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <link rel="stylesheet" href="./css/reveal.css">
+    <link rel="stylesheet" href="./css/theme/serif.css" id="theme">
+    <link rel="stylesheet" href="./css/hljs/github.css">
+    <link rel="stylesheet" href="./css/presentation.css">
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Select transition type -->
+      <div class="slides">
+        <section id="transitions">
+          <p>
+            <a href="?transition=none#/transitions">None</a> -
+            <a href="?transition=fade#/transitions">Fade</a> -
+            <a href="?transition=slide#/transitions">Slide</a> -
+            <a href="?transition=convex#/transitions">Convex</a> -
+            <a href="?transition=concave#/transitions">Concave</a> -
+            <a href="?transition=zoom#/transitions">Zoom</a>
+          </p>
+        </section>
+
+        <section>
+          <h2 class="main-title">
+            <span style="color: #80BD01;">Node.js</span>
+            &
+            <span style="color: #E34F26;">html5</span>
+            <small>for multi-platform</small>desktop apps
+          </h2>
+
+          <p>
+            <small>by Kevin R. Purnelle</a></small>
+          </p>
+
+        </section>
+
+        <section>
+          <section>
+            <h2>Why this presentation</h2>
+<!--             <div class="fragment">
+              Own tools, share my experience. Hope it makes you want to explore.
+              Why I think it's awesome. Can't learn everything.
+            </div> -->
+          </section>
+
+          <section>
+            <h2>Frustration over simple apps</h2>
+            <img style="position:relative; left: -200px" width="600" src="./images/winamp.png" />
+            <img style="position:relative; top: -400px; left: 90px" width="600" src="./images/totalcommander.png" />
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Tools</h2>
+            <div class="">
+              <div class="txt-left group">
+                <img class="fl no-border no-shadow v-middle h-space" width="180" src="./images/nwjs.png" />
+                <p class="pad-top">NWJS (Node-webkit before) <br>(Roger Wang - Intel)</p>
+              </div>
+              <div class="txt-left group">
+                <img style="margin-left: 180px" class="fl no-border no-shadow v-middle h-space" width="180" src="./images/electron.svg" />
+                <p class="pad-top">Electron (Atom-shell before) <br>(Github)</p>
+              </div>
+            </div>
+          </section>
+          <section>
+            <h2>Known apps</h2>
+            <iframe src="http://electron.atom.io/#built-on-electron" width="800" height="400"> </iframe>
+          </section>
+          <section>
+            <h2>What they are</h2>
+            <div>
+              <img class="no-border no-shadow v-middle h-space" width="300" src="./images/chromium.svg" />
+              <span class="v-middle h-space" style="font-size: 3em">+</span>
+              <img class="no-border no-shadow v-middle" width="400" src="./images/nodejs.svg" />
+              <p>
+                Chromium + Node.js
+              </p>
+            </div>
+          </section>
+          <section>
+            <div class="context">
+              <img style="z-index: 0; position:absolute; top: 10px; left: 50%;" class="no-border no-shadow v-middle h-space" width="200" src="./images/chrome.svg" />
+              <img style="z-index: 5; position: relative;" class="no-border no-shadow v-middle h-space" width="300" src="./images/chromium.svg" />
+              <h2>Chromium</h2>
+              <p>Base project for Google Chrome</p>
+              <ul>
+                <li>Open-source</li>
+              </ul>
+            </div>
+          </section>
+          <section>
+            <h2>Differences</h2>
+            <div class="fragments">
+              <ul>
+                <li>
+                  <span class="h-space">Entry point:</span>
+                  <img class="no-border no-shadow v-middle" height="40" src="./images/nwjs.png" />
+                  <span class="h-space">index.html</span>
+                  <img class="no-border no-shadow v-middle" height="40" src="./images/electron.svg" />
+                  main.js
+                </li>
+                <li>Build system (faster to build Electron)</li>
+                <li>Node integration (nwjs patches chromium)</li>
+                <li>Node <-> Browser communication</li>
+              </ul>
+            </div>
+          </section>
+          <section>
+            <h2>
+              A matter of communication and security
+            </h2>
+            <div class="group">
+              <div class="col-half">
+              <img class="no-border no-shadow v-middle h-space" height="100" src="./images/nwjs.png" />
+              <p>Node context + Window context (browser)</p>
+              <p>Access variables from the browser or node.js "directly".</p>
+              </div>
+
+              <div class="col-half">
+              <img class="no-border no-shadow v-middle h-space" height="100" src="./images/electron.svg" />
+              <p>Main process + Renderer process (browser)</p>
+              <p>Inter-process communication. (IPC)</p>
+              </div>
+            </div>
+
+          </section>
+          <section>
+            <h3>Electron IPC styles</h3>
+            <div class="group">
+              <div class="col-half">
+
+                <img class="no-border no-shadow v-middle h-space" height="100" src="./images/chromium.svg" />
+
+                <pre><code class="hljs" data-trim contenteditable>
+// In renderer process (web page).
+var ipc = require('ipc');
+ipc.send('asynch-message', 'ping');
+                </code></pre>
+                <pre><code class="hljs" data-trim contenteditable>
+// With remote module
+var remote = require('remote');
+remote.require(moduleFromMainProcess)
+                </code></pre>
+              </div>
+              <div class="col-half">
+
+                <img class="no-border no-shadow v-middle h-space" height="100" src="./images/nodec.svg" />
+
+                <pre><code class="hljs" data-trim contenteditable>
+// In main process.
+var ipc = require('ipc');
+ipc.on('asynch-message', function(event, arg) {
+  console.log(arg);  // prints "ping"
+  event.sender.send('asynch-reply', 'pong');
+});
+                </code></pre>
+              </div>
+            </div>
+
+          </section>
+        </section>
+
+        <section>
+          <section>
+          <h2>Vantages and disadvantages</h2>
+           The good, the bad and the ugly
+          </section>
+          <section>
+            <h3>The good</h3>
+            <div>
+              <img class="no-border no-shadow v-middle h-space" height="50" src="./images/npm.svg" />
+              <img class="no-border no-shadow v-middle h-space" height="50" src="./images/js.svg" />
+            </div>
+            <ul>
+              <li>JS only (who said full stack JS ? :)</li>
+              <li>Development as usual</li>
+              <li>UI with CSS, only one browser</li>
+              <li>Multi-platform</li>
+              <li>Native interactions
+                <button class="btn font-up" onclick="window.app.notify()">
+                  <img class="no-border no-shadow v-middle" height="36" src="./images/notify.svg" />
+                  Notify!
+                </button></li>
+            </ul>
+          </section>
+          <section>
+            <h3>The bad</h3>
+            <ul>
+              <li>"Almost" multi-platform</li>
+              <li>Some dev tools are not that "<a href="http://electron.atom.io/" target="_blank">straightforward</a>"</li>
+              <li>"Not native"</li>
+              <li>
+                Distribution is harder
+                <p>But possible to use Apple app store!</p>
+              </li>
+            </ul>
+          </section>
+          <section>
+            <h3>The ugly</h3>
+            <p>
+              <img class="no-border no-shadow v-middle" height="250" src="./images/weight.svg" />
+            </p>
+            <ul>
+              <li>Weight ~= 100 MB unzipped, 35 MB zipped</li>
+            </ul>
+            <p>
+              But, there is hope... modular Chromium
+            </p>
+          </section>
+          <section>
+            <h2>
+              Is there a better one?
+            </h2>
+            <p>...not really</p>
+            <ul>
+              <li>Both have good communities</li>
+              <li>Electron has more traction</li>
+              <li>Docs are better for Electron</li>
+              <li>I switched from NWJS to Electron <br>
+                <button class="fragment btn font-up" onclick="window.app.selectDir()">Select folder</button>
+              </li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>What I have done</h2>
+            <div class="fragment">
+              Music Player (Kaiku)
+              <img class="no-border no-shadow v-middle" width="600" src="./images/kaiku.png" />
+            </div>
+          </section>
+
+          <section>
+            <h2>Development process</h2>
+            <p>
+              Same as usual
+            </p>
+            <div>
+              <ul>
+                <li>npm install</li>
+                <li>code, bundle, livereload <br><small>(atom-watcher)</small></li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2>Problems</h2>
+            <ul>
+              <li>Storage / Database</li>
+              <li>Multi-platform performance<br>
+                <p>OSX vs Windows</p>
+              </li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Opportunities</h2>
+            <div class="fragment">
+              <ul>
+                <li>Demos</li>
+                <li>Actual products</li>
+                <li>Usability Testing</li>
+                <li>Solve your frustrations (like me)</li>
+              </ul>
+            </div>
+          </section>
+          <section>
+          <h3 style="position: absolute; top: 60px; left: 0; color: #fff; text-shadow: rgb(3, 3, 3) 2px 1px 1px;">
+            "We need you to draw seven red lines, all strictly perpendicular, <br>with green and transparent ink."
+          </h3>
+          <div>
+            <img class="no-border no-shadow v-middle" height="600" src="./images/theexpert.png" />
+          </div>
+           <p> <small>"The Expert" written & directed by Lauris Beinerts</small></p>
+          </section>
+        </section>
+
+        <section>
+          <h2>Demo: package ready <br>in 1 minute</h2>
+          <section>
+            <div>
+              <div>
+                <img class="no-border no-shadow v-middle" height="80" src="./images/rs.svg" />
+              </div>
+              <p>
+                Example: RisingStack Trace Investigation
+              </p>
+            </div>
+          </section>
+          <section>
+            <p>Prerequisites:</p>
+            <pre><code class="hljs" data-trim contenteditable>
+npm install electron-prebuilt -g
+npm install electron-packager -g
+            </code></pre>
+            <ol>
+              <li>Copy Electron starter</li>
+              <li>Generate dist, copy the file</li>
+              <li>Edit paths</li>
+              <li>Generate packages</li>
+            </ol>
+          </section>
+        </section>
+
+        <section>
+          <h2>Conclusion</h2>
+          <div class="fragment">
+            <img class="no-border no-shadow v-middle" height="300" src="./images/fuckyeah.svg" />
+          </div>
+        </section>
+
+        <section>
+          <h2>Questions</h2>
+          <p>
+            me: Kevin Purnelle <br>
+            kevin.purnelle@gmail.com <br>
+            <strong>AoDev</strong> on npm and Github
+          </p>
+          <p>
+            <img class="no-border no-shadow v-middle" height="40" src="./images/rs.svg" /> RisingStack
+          </p>
+
+          <ul>
+            <li>http://electron.atom.io/</li>
+            <li>https://www.npmjs.com/package/atom-watcher</li>
+            <li>http://nwjs.io/</li>
+          </ul>
+        </section>
+
+      </div>
+
+    </div>
+
+    <script src="./lib/head.min.js"></script>
+    <script src="./lib/reveal.js"></script>
+
+    <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: './lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: './plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: './plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: './plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: './plugin/zoom-js/zoom.js', async: true },
+          { src: './plugin/notes/notes.js', async: true }
+        ]
+      });
+
+    </script>
+    <script src="./app/app.js"></script>
+
+  </body>
+</html>

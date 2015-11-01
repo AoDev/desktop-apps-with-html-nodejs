@@ -1,0 +1,12 @@
+{
+  "name": "desktop-apps-with-html-nodejs",
+  "version": "1.0.0",
+  "description": "Quick start a project running with Electron",
+  "main": "main.js",
+  "author": "Kevin Purnelle <kevin.purnelle@gmail.com> (http://kevinpurnelle.com/)",
+  "license": "GPLv2",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
